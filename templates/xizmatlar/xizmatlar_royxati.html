@@ -1,0 +1,186 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рўйхати хизматҳо</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/xizmatlar_royxati.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="light-mode"> <!-- light-mode bilan boshlanadi -->
+    
+    
+    <header>
+        <div class="gif-logo">
+            <img src="{% static 'xizmatlar/images/online_work.gif' %}" alt="Logo" class="navbar-gif">
+        </div>
+        
+        <div class="nav-links">
+            <a href="{% url 'home' %}" >Асосӣ</a>
+            <a href="{% url 'about' %}" >Дар бораи мо</a>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <p>Салом, {{ user.username }}</p>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: blue; cursor: pointer;">
+                    Баромад
+                </button>
+            </form>
+        </div>
+        {% else %}
+            <div class="auth-links">
+                <a href="{% url 'login' %}">Даромадан</a> | <a href="{% url 'signup' %}">Аз рӯйхат гузаштан</a>
+            </div>
+        {% endif %}
+        <!-- Contact Button -->
+        
+        <h1>Рўйхати хизматҳо</h1>
+        <form method="get" action="" class="search-form">
+            <input type="text" name="qidiruv" placeholder="Хизматро ҷустуҷӯ кун..." value="{{ qidiruv }}">
+            <button type="submit">🔍</button>
+        </form>
+        <button id="mode-toggle">🌙/☀️</button> <!-- id qo‘shildi -->
+    </header>
+
+    <main>
+        {% if page_obj %}
+        <ul class="service-list">
+            {% for xizmat in page_obj %}
+                <li class="service-card">
+                    <a href="{% url 'service_detail' pk=xizmat.pk %}" class="service-link">
+                    
+                        {% if xizmat.rasm %}
+                            <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" class="xizmat-image">
+
+                         {% endif %}
+            
+                         <h2 style="display: flex; align-items: center; gap: 8px;">
+                            {{ xizmat.nomi }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </h2>
+                        
+                        <p>{{ xizmat.tavsif }}</p>
+                        <p><strong>Нарх:</strong> {{ xizmat.narx }} сомонӣ</p>
+                        {% if xizmat.joylashuv %}
+                            <p><strong>Макон:</strong> {{ xizmat.joylashuv }}</p>
+                        {% endif %}
+                        {% if xizmat.telefon %}
+                            <p><strong>Телефон:</strong> {{ xizmat.telefon }}</p>
+                        {% endif %}
+                        <small>{{ xizmat.sana|date:"d.m.Y H:i" }}</small>
+                    </a>
+                        {% if request.user == xizmat.user %}
+                        <form method="post" action="{% url 'delete_service' xizmat.id %}" class="delete-form" onsubmit="return confirmDelete()">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">🗑️ Тоза кардан</button>
+                        </form>
+                        {% endif %}
+
+                    <!-- Agar foydalanuvchi xizmat egasi BO‘LMASA, Chat tugmasi ko‘rsatiladi -->
+                        {% if user.is_authenticated and request.user != xizmat.user and xizmat.id %}
+                        <a href="{% url 'chat_room' room_name='xizmat_'|add:xizmat.id|stringformat:'s' %}" class="btn btn-primary">
+                            Chat
+                        </a>
+                        {% endif %}
+
+                    <!-- Modal tugma (hamma foydalanuvchilar uchun chiqadi) -->
+                        <button id="contact-btn-{{ xizmat.id }}" class="contact-button"> Фармоиш додан/ Тамос</button>
+
+                    <!-- Modal oynasi -->
+                        <div id="contact-modal-{{ xizmat.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close-btn" data-modal-id="{{ xizmat.id }}">&times;</span>
+                                <h2> Тамос шудан</h2>
+                                <form method="post" action="{% url 'send_message' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name="name" placeholder="Ismingiz" required>
+                                    <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
+                                    <textarea name="message" placeholder="Xabarni kiriting..." required></textarea>
+                                    <button type="submit">Фиристодан</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">« Аввал</a>
+                <a href="?page={{ page_obj.previous_page_number }}">← Қафо</a>
+            {% endif %}
+            ...
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Омин →</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Охирин »</a>
+            {% endif %}
+        </div>
+        {% else %}
+            <p class="p-xizmat">Ҳоло ягон хизмат мавҷуд нест.</p>
+            <img src="{% static 'xizmatlar/images/no-result.gif' %}" alt="Хизматҳо нестанд" style="max-width: 300px; margin: 0 auto; display: block;">
+        {% endif %}
+
+
+        <a href="{% url 'add_service' %}" class="add-button">➕ Хизмат дохил кардан</a>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modeToggleButton = document.getElementById('mode-toggle');
+            const body = document.body;
+    
+            // Initial icon state
+            modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    
+            // Toggle mode
+            modeToggleButton.addEventListener('click', function () {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    modeToggleButton.innerText = '🌙';
+                } else {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    modeToggleButton.innerText = '☀️';
+                }
+            });
+    
+            // Modal logic — qolgani to‘g‘ri
+            document.querySelectorAll('[id^="contact-btn-"]').forEach(function (btn) {
+                const id = btn.id.split('-')[2];
+                const modal = document.getElementById(`contact-modal-${id}`);
+                const closeBtn = modal.querySelector('.close-btn');
+    
+                btn.addEventListener('click', function () {
+                    modal.style.display = 'flex';
+                });
+    
+                closeBtn.addEventListener('click', function () {
+                    modal.style.display = 'none';
+                });
+    
+                window.addEventListener('click', function (event) {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    
+
+    
+</body>
+</html>

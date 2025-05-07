@@ -1,0 +1,89 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дар бораи мо</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'xizmatlar/home.css' %}">
+</head>
+<body class="light-mode"> <!-- light-mode бо оғоз мешавад -->
+
+    <!-- Сексияи сар -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="{% url 'home' %}">mardikor.tj</a>
+            </div>
+            <nav class="nav-links">
+                <a href="{% url 'home' %}">Асосӣ</a>
+                <a href="{% url 'xizmatlar_royxati' %}">Хизматҳо</a>
+                <a href="{% url 'about' %}">Дар бораи мо</a>
+            </nav>
+            <div class="user-auth">
+                {% if user.is_authenticated %}
+                    <p>Салом, {{ user.username }}</p>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">Чиқиш</button>
+                    </form>
+                {% else %}
+                    <div class="auth-links">
+                        <a href="{% url 'login' %}">Кириш</a> | <a href="{% url 'signup' %}">Рӯйхатдан омадан</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Мазмуни асосӣ -->
+    <main>
+        <!-- Сексияи герой бо тасвир -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Мақсади лоиҳа ва вазифаҳо</h1>
+                <p>mardikor.tj — ин як ҳалли онлайн барои хидматҳо ва касбҳо мебошад. Ин сайт асосан барои таъмин кардани табақаҳои камтаъминшудаи шаҳр ва рустоҳо бо хидматҳо ва ёрии зарурӣ сохта шудааст. Ҳамаи хидматҳо барои корбарон бо эҳтиёт ва шаффофият пешниҳод мешаванд.</p>
+                <a href="{% url 'xizmatlar_royxati' %}" class="btn-primary">Рӯйхати хидматҳо</a>
+            </div>
+            <img src="{% static 'images/hero-image.jpg' %}" alt="Хидматҳо" class="hero-image">
+        </section>
+
+        <!-- Сексияи дар бораи -->
+        <section class="about-section">
+            <h2>Дар бораи лоиҳа</h2>
+            <p>Ман, Райҳона, барномасозе, ки ин лоиҳаро таҳия намудам. mardikor.tj платформае мебошад, ки хидматҳо ва касбҳоро таъмин мекунад. Лоиҳа барои таъмин кардани хидматҳо ва ёрии замонавӣ ба корбарон сохта шудааст.</p>
+            <p>Мақсади мо таъмини коргарон ва хидматҳоро дар як платформаи осон барои истифода ва дастрас кардани хидматҳо мебошад.</p>
+            <p>Агар шумо саволҳо ё таклифҳо дошта бошед, метавонед бо мо дар тамос шавед.</p>
+        </section>
+
+        <!-- Сексияи тамос -->
+        <section class="contact">
+            <h3>Бо мо дар тамос шавед</h3>
+            <p>Барои ҳар гуна саволҳо, пешниҳодҳо ё талаботҳо, шумо метавонед бо мо тамос гиред. Мо фикрҳои шуморо қадр мекунем!</p>
+            <a href="mailto:info@mardikor.tj" class="btn-primary">Ба мо почтаи электронӣ фиристед</a>
+        </section>
+    </main>
+
+    <!-- Сексияи поён -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 mardikor.tj. Ҳамаи ҳуқуқҳо ҳифз шудаанд.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Танзими режими торик/свет
+        document.addEventListener('DOMContentLoaded', function () {
+            const modeToggleButton = document.getElementById('mode-toggle');
+            const body = document.body;
+            modeToggleButton.addEventListener('click', function () {
+                body.classList.toggle('light-mode');
+                body.classList.toggle('dark-mode');
+            });
+        });
+    </script>
+</body>
+</html>

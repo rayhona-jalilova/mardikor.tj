@@ -1,0 +1,78 @@
+/* signup.css */
+
+/* Umumiy konteyner dizayni */
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sarlavha dizayni */
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Formani o‘rnatish */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form elementlariga stil */
+form input[type="text"], form input[type="password"], form button {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Tugma dizayni */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Hato xabarlarini ko‘rsatish */
+.error-messages {
+    background-color: #ffdddd;
+    color: #d9534f;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+/* Havolalar dizayni */
+p, a {
+    text-align: center;
+    color: #007bff;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Bosh sahifaga qaytish tugmasi */
+a:hover {
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}

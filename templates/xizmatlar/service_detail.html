@@ -1,0 +1,90 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ xizmat.nomi }}</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/service_detail.css' %}">
+</head>
+<body class="light-mode">
+    <header class="header">
+        <div class="container">
+            <h1>{{ xizmat.nomi }}</h1>
+            <button onclick="toggleMode()">🌙/☀️</button>
+        </div>
+    </header>
+
+    <section class="service-details">
+        <div class="container">
+            {% if xizmat.rasm %}
+                <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" class="service-image">
+            {% endif %}
+            <div class="service-info">
+                <p><strong>Тавсиф:</strong> {{ xizmat.tavsif }}</p>
+                <p><strong>Нарх:</strong> {{ xizmat.narx }} сомонӣ</p>
+                {% if xizmat.kategoriya %}
+                    <p><strong>Категория:</strong> {{ xizmat.kategoriya }}</p>
+                {% endif %}
+                {% if xizmat.joylashuv %}
+                    <p><strong>Макон:</strong> {{ xizmat.joylashuv }}</p>
+                {% endif %}
+                {% if xizmat.telefon %}
+                    <p><strong>Телефон:</strong> {{ xizmat.telefon }}</p>
+                {% endif %}
+                <p><small>Илова қилинган: {{ xizmat.sana|date:"d.m.Y H:i" }}</small></p>
+                <a href="{% url 'xizmatlar_royxati' %}" class="back-link">⬅️ Ба хизмат баргаштан</a>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <div class="container">
+            <h2>Фикр ва баҳоҳо</h2>
+
+            {% for sharh in sharhlar %}
+                <div class="review-box">
+                    <strong>{{ sharh.foydalanuvchi.username }}</strong> ⭐ {{ sharh.baho }}
+                    <p>{{ sharh.matn }}</p>
+                    <small>{{ sharh.sana|date:"d.m.Y H:i" }}</small>
+                </div>
+            {% empty %}
+                <p>Ҳоло ягон хизмат мавҷуд нест.</p>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <h3>Фикр навиштан</h3>
+                <form method="post" class="review-form">
+                    {% csrf_token %}
+                    <div class="rating">
+                        <label for="rating-1">1</label>
+                        <input type="radio" name="baho" value="1" id="rating-1">
+                        <label for="rating-2">2</label>
+                        <input type="radio" name="baho" value="2" id="rating-2">
+                        <label for="rating-3">3</label>
+                        <input type="radio" name="baho" value="3" id="rating-3">
+                        <label for="rating-4">4</label>
+                        <input type="radio" name="baho" value="4" id="rating-4">
+                        <label for="rating-5">5</label>
+                        <input type="radio" name="baho" value="5" id="rating-5">
+                    </div>
+                    
+                    {{ form.matn }}
+                    <button type="submit" class="submit-btn">Фиристодан</button>
+                </form>
+            {% else %}
+                <p>Барои фикр дохил кардан <a href="{% url 'login' %}">ба система даромадан</a>.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <script>
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бақайдгирӣ</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/signup.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Бақайдгирӣ</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+                <div class="error-messages">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <button type="submit">Сабт кардан</button>
+        </form>
+        
+        <p>Аллакай ҳисоби корбар доред? <a href="{% url 'login' %}">Ворид шудан</a></p>
+        <a href="{% url 'xizmatlar_royxati' %}">⬅️ Бозгашт ба саҳифаи асосӣ</a>
+    </div>
+</body>
+</html>

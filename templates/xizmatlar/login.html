@@ -1,0 +1,25 @@
+{% load static %}
+{% load i18n %}
+
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ворид шудан</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/login.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Воридшавии истифодабаранда</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Ворид шудан</button>
+        </form>
+        <p>Ҳанӯз ба сабт наомадаед? <a href="{% url 'signup' %}">Ба сабт шавед</a></p>
+        <a href="{% url 'xizmatlar_royxati' %}">⬅️ Ба саҳифа баргаштан</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <title>Ҳуҷраи сӯҳбат</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/chat.css' %}">
+</head>
+<body>
+
+    <!-- 🔘 Dark Mode tugmasi -->
+    <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+    <!-- 📌 Сарлавҳа -->
+    <header>
+        <h1>Ҳуҷраи сӯҳбат: {{ room_name }} 
+            <span id="status-indicator" class="offline">Offline</span>
+        </h1>
+    </header>
+
+    <!-- 💬 Сӯҳбат контейнер -->
+    <div id="chat-box">
+        <div id="chat-log">
+            <!-- Xabarlar shu yerga qo‘shiladi -->
+        </div>
+
+        <!-- ✏️ Хабар юбориш -->
+        <input id="chat-message-input" type="text" placeholder="Паёми худро ворид намоед..." />
+        <button id="chat-message-input-btn">Фиристодан</button>
+    </div>
+
+    <!-- 📜 JavaScript логика -->
+    <script>
+        const username = "{{ request.user.username }}";
+        const roomName = "{{ room_name }}";
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        const log = document.getElementById('chat-log');
+
+        // Xabarlarni qabul qilish
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const msg = document.createElement('div');
+            msg.className = 'chat-message'; // chat-message sinfini yaratamiz
+
+            // Vaqtni olish
+            const now = new Date();
+            const time = now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
+
+            // Xabarni HTML sifatida qo‘shish
+            msg.innerHTML = `<strong>[${time}] ${data.username}:</strong> ${data.message}`;
+            
+            // Xabarni chat-logga qo‘shish
+            log.appendChild(msg);
+
+            // Scrollni oxirgi xabarga siljitish
+            log.scrollTop = log.scrollHeight;
+        };
+
+        // WebSocket ochilganida statusni o'zgartirish
+        chatSocket.onopen = function() {
+            document.getElementById('status-indicator').classList.remove('offline');
+            document.getElementById('status-indicator').classList.add('online');
+            document.getElementById('status-indicator').textContent = 'Online';
+        };
+
+        // WebSocket yopilganida statusni o'zgartirish
+        chatSocket.onclose = function() {
+            document.getElementById('status-indicator').classList.remove('online');
+            document.getElementById('status-indicator').classList.add('offline');
+            document.getElementById('status-indicator').textContent = 'Offline';
+        };
+
+        // Xabar yuborish tugmasi
+        document.getElementById('chat-message-input-btn').onclick = function() {
+            const input = document.getElementById('chat-message-input');
+            const message = input.value.trim();
+            if (message) {
+                // Xabarni WebSocket orqali yuborish
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'username': username,
+                }));
+                input.value = ''; // Xabar yuborilgach inputni tozalash
+            }
+        };
+
+        // Dark mode o'zgartirish funksiyasi
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>

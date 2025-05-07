@@ -1,0 +1,31 @@
+{% extends 'xizmatlar_royxati.html' %}
+
+{% block content %}
+<h2>Хизматрасон: {{ provider.username }}</h2>
+
+<h3>Вақтҳои дастрас:</h3>
+<ul>
+    {% for time in availability %}
+        <li>{{ time.date }}: {{ time.start_time }} - {{ time.end_time }}</li>
+    {% empty %}
+        <li>Вақтҳои дастрас мавҷуд нестанд</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h3>Алоқа:</h3>
+<div style="border: 1px solid #ccc; padding: 10px; max-height: 300px; overflow-y: scroll;">
+    {% for msg in messages %}
+        <p><strong>{{ msg.sender.username }}:</strong> {{ msg.text }} <em>({{ msg.timestamp }})</em></p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Фиристодан</button>
+</form>
+
+<a href="{% url 'home' %}">⬅️ Бозгашт</a>
+{% endblock %}
