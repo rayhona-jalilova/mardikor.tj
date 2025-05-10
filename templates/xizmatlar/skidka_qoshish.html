@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Иловаи хидмати бо тахфиф</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'xizmatlar/skidka_qoshish.css' %}">
+</head>
+<body>
+
+<div class="skidka-form-wrapper container mt-5">
+    <h2 class="text-center mb-4">🤑 Иловаи хидмати бо тахфиф</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">🔧 Номи хидмат</label>
+            {{ form.nomi }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📄 Тавсиф</label>
+            {{ form.tavsif }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">💰 Нархи хидмат (сум)</label>
+            {{ form.narx }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📍 Макон</label>
+            {{ form.joylashuv }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📞 Телефон</label>
+            {{ form.telefon }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">🖼️ Расм</label>
+            {{ form.rasm }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">📂 Категория</label>
+            {{ form.kategoriya }}
+        </div>
+
+        <!-- Скрытый input для скидки -->
+        {{ form.skidka }}
+
+        <button type="submit" class="btn btn-success">➕ Илова кардан</button>
+    </form>
+
+</div>
+
+</body>
+</html>

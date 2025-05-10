@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category|title }} xizmatlari</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <h1>{{ category|title }} xizmatlari</h1>
+
+    {% if services %}
+        <ul>
+            {% for service in services %}
+                <li>
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.description|truncatewords:20 }}</p>
+                    <p><strong>Manzil:</strong> {{ service.location }}</p>
+                    <p><strong>Aloqa:</strong> {{ service.contact_info }}</p>
+                    <a href="{% url 'service_detail' service.id %}">Batafsil</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Bu turdagi xizmatlar hozircha mavjud emas.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хизмати барқ</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/style.css' %}">
+    <link rel="stylesheet" href="{% static 'xizmatlar/xizmatlar_royxati.css' %}">
+</head>
+<body>
+    <header>
+        <div class="gif-logo">
+            <a href="{% url 'xizmatlar_royxati'%}">  <img src="{% static 'xizmatlar/images/ChatGPT Image 7 мая 2025 г., 10_31_34.png' %}" alt="Logo" class="navbar-gif"></a>
+        </div>
+        
+        <div class="nav-links">
+            <a href="{% url 'home' %}" >Асосӣ</a>
+            <a href="{% url 'about' %}" >Дар бораи мо</a>
+        </div>
+        <h1>Хизмати тозакунӣ</h1>
+
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <p>Салом, {{ user.username }}</p>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: blue; cursor: pointer;">
+                    Баромад
+                </button>
+            </form>
+        </div>
+        {% else %}
+            <div class="auth-links">
+                <a href="{% url 'login' %}">Даромадан</a> | <a href="{% url 'signup' %}">Аз рӯйхат гузаштан</a>
+            </div>
+        {% endif %}
+
+        <form method="get" action="" class="search-form">
+            <input type="text" name="qidiruv" placeholder="Хизматро ҷустуҷӯ кун..." value="{{ qidiruv }}">
+            <button type="submit">🔍</button>
+        </form>
+        <button id="mode-toggle">🌙/☀️</button>
+    </header>
+
+
+
+    {% if xizmatlar %}
+        <ul>
+            {% for xizmat in xizmatlar %}
+                <li>
+                    <h3>{{ xizmat.nomi }}</h3>
+                    <p>{{ xizmat.tavsif }}</p>
+                    <p>Нарх: {{ xizmat.narx }}</p>
+
+                    {% if xizmat.rasm %}
+                        <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" style="max-width: 200px;">
+                    {% endif %}
+
+                    <!-- Tavsiflash tugmasi (Xizmat tafsilotlariga kirish) -->
+                    <a href="{% url 'service_detail' xizmat.id %}" class="btn">Тавсифлаш</a>
+
+                    <!-- Bron qilish tugmasi (Xizmatni bron qilish) -->
+                    <button id="contact-btn-{{ xizmat.id }}" class="contact-button">Фармоиш додан/ Тамос</button>
+
+                    <!-- Uchrish tugmasi (Xizmatni uchirish) -->
+                    {% if xizmat.user == user %}
+                        <form method="post" action="{% url 'delete_service' xizmat.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Ўчириш</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ҳоло хизмати тозакунӣ мавҷуд нест.</p>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modeToggleButton = document.getElementById('mode-toggle');
+            const body = document.body;
+
+            // Initial icon state
+            modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+
+            // Toggle mode
+            modeToggleButton.addEventListener('click', function () {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    modeToggleButton.innerText = '🌙';
+                } else {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    modeToggleButton.innerText = '☀️';
+                }
+            });
+
+            // Modal logic
+            document.querySelectorAll('[id^="contact-btn-"]').forEach(function (btn) {
+                const id = btn.id.split('-')[2];
+                const modal = document.getElementById(`contact-modal-${id}`);
+                const closeBtn = modal.querySelector('.close-btn');
+
+                btn.addEventListener('click', function () {
+                    modal.style.display = 'flex';
+                });
+
+                closeBtn.addEventListener('click', function () {
+                    modal.style.display = 'none';
+                });
+
+                window.addEventListener('click', function (event) {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

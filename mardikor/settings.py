@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'xizmatlar',
     'templates',
     'channels',
+    
 ]
 
 ASGI_APPLICATION = 'mardikor.asgi.application'

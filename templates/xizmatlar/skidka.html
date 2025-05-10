@@ -1,0 +1,69 @@
+{% load static %}
+{% load multiply %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Chegirmali Xizmatlar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'xizmatlar/skidka.css' %}">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="{% url 'home' %}" class="logo">🏠 Asosiy</a>
+            <nav>
+                <a href="{% url 'xizmatlar_royxati' %}">🔙 Хизматҳо</a>
+                <a href="{% url 'chegirmali_xizmat_qoshish' %}" class="add-discount-btn">➕ Chegirmali Xizmat Qo‘shish</a>
+            </nav>
+        </div>
+        <h2 class="page-title">10% хизматрасониҳои тахфиф</h2>
+    </header>
+
+    <main>
+        <h1 class="section-title">Хизматрасониҳои тахфиф</h1>
+        <div class="service-container">
+            {% for xizmat in xizmatlar %}
+                <div class="service-card">
+                    {% if xizmat.rasm %}
+                        <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" class="xizmat-image">
+                    {% endif %}
+                    <div class="service-info">
+                        <h3 class="service-title">{{ xizmat.nomi }}</h3>
+                        <p class="service-description">{{ xizmat.tavsif|truncatechars:100 }}</p>
+                        <div class="price">
+                            <span class="old-price">{{ xizmat.narx }} сомонӣ</span>
+                            <!-- Server tomonidan hisoblangan chegirmali narx -->
+                            <span class="new-price">{{ xizmat.narx|multiply:0.9|floatformat:0 }} сомонӣ</span>
+                        </div>
+                        <div class="service-actions">
+                            <a href="{% url 'service_detail' xizmat.id %}" class="details-btn">Тавсиф</a>
+                            <button class="contact-btn" data-id="{{ xizmat.id }}">Фармоиш додан / Тамос</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal" id="modal-{{ xizmat.id }}">
+                    <div class="modal-content">
+                        <span class="close-btn" data-id="{{ xizmat.id }}">&times;</span>
+                        <h3>Bron qilish uchun aloqa</h3>
+                        <form method="post" action="{% url 'book_service' xizmat.id %}">
+                            {% csrf_token %}
+                            <input type="text" name="ism" placeholder="Ismingiz" required>
+                            <input type="tel" name="telefon" placeholder="Telefon raqamingiz" required>
+                            <textarea name="xabar" placeholder="Xabar..." rows="4"></textarea>
+                            <button type="submit" class="send-btn">Фиристодан</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="text-align:center; font-size: 1.2rem;">Ҳоло хизматҳои тахфиф  мавҷуд нест.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>

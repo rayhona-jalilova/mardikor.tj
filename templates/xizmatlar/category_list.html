@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tj">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ sarlavha }}</title>
+    <link rel="stylesheet" href="{% static 'xizmatlar/xizmatlar_royxati.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode"> <!-- light-mode bilan boshlanadi -->
+    
+    <header>
+        <div class="gif-logo">
+            <a href="{% url 'xizmatlar_royxati'%}"><img src="{% static 'xizmatlar/images/ChatGPT Image 7 мая 2025 г., 10_31_34.png' %}" alt="Logo" class="navbar-gif"></a>
+        </div>
+        
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Асосӣ</a>
+            <a href="{% url 'about' %}">Дар бораи мо</a>
+        </div>
+        
+        <h1>{{ sarlavha }}</h1>
+
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <p>Салом, {{ user.username }}</p>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: blue; cursor: pointer;">
+                    Баромад
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <div class="auth-links">
+            <a href="{% url 'login' %}">Даромадан</a> | <a href="{% url 'signup' %}">Аз рӯйхат гузаштан</a>
+        </div>
+        {% endif %}
+
+        <form method="get" action="" class="search-form">
+            <input type="text" name="qidiruv" placeholder="Хизматро ҷустуҷӯ кун..." value="{{ qidiruv }}">
+            <button type="submit">🔍</button>
+        </form>
+
+        <button id="mode-toggle">🌙/☀️</button>
+    </header>
+
+    <main>
+        <h2>{{ sarlavha }} рўйхати</h2>
+
+        {% if xizmatlar %}
+        <ul class="service-list">
+            {% for xizmat in xizmatlar %}
+            <li class="service-card">
+                <a href="{% url 'service_detail' pk=xizmat.pk %}">
+                    <h3>{{ xizmat.nomi }}</h3>
+                    <p>{{ xizmat.tavsif }}</p>
+                    <p>Нарх: {{ xizmat.narx }} сомонӣ</p>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Ҳеч хизмат мавҷуд нест. Илтимос, кейинро қайта кўришни ўйлаб кўринг.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mardikor.tj | Барчасаб</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modeToggleButton = document.getElementById('mode-toggle');
+            const body = document.body;
+    
+            modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    
+            modeToggleButton.addEventListener('click', function () {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    modeToggleButton.innerText = '🌙';
+                } else {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    modeToggleButton.innerText = '☀️';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

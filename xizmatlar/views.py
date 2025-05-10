@@ -16,6 +16,121 @@ from .models import Message, User, Availability
 from .forms import MessageForm
 
 
+
+
+
+
+
+def book_service(request, xizmat_id):
+    xizmat = get_object_or_404(Xizmat, id=xizmat_id)
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.xizmat = xizmat
+            message.save()
+            return redirect('service_detail', xizmat.id)
+    else:
+        form = MessageForm()
+    return redirect('service_detail', xizmat.id)
+
+
+
+
+@login_required
+def chegirmali_xizmat_qoshish(request):
+    if request.method == 'POST':
+        form = XizmatForm(request.POST, request.FILES)
+        if form.is_valid():
+            xizmat = form.save(commit=False)
+            xizmat.egasi = request.user
+            xizmat.skidka = True  # chegirmali belgilanadi
+            xizmat.save()
+            return redirect('skidka')
+    else:
+        form = XizmatForm()
+    return render(request, 'xizmatlar/skidka_qoshish.html', {'form': form})
+
+
+
+def skidka_xizmatlar(request):
+    xizmatlar = Xizmat.objects.filter(skidka=True)
+    return render(request, 'xizmatlar/skidka.html', {'xizmatlar': xizmatlar})
+
+
+
+
+
+def santexniklar(request):
+    xizmatlar = Xizmat.objects.filter(kategoriya='Сантехник')
+    return render(request, 'xizmatlar/santexnik.html', {'xizmatlar': xizmatlar})
+
+
+def xasharchilar(request):
+    xizmatlar = Xizmat.objects.filter(kategoriya="Ҳашарчӣ")  # Kategoriyani o'zingizga moslang
+    return render(request, 'xizmatlar/xasharchi.html', {'xizmatlar': xizmatlar})
+
+def barqchilar(request):
+    xizmatlar = Xizmat.objects.filter(kategoriya='Барқчӣ')
+    return render(request, 'xizmatlar/barqchi.html', {'xizmatlar': xizmatlar,})
+
+def cleaners(request):
+    xizmatlar = Xizmat.objects.filter(kategoriya='Тозакунанда')
+    return render(request, 'xizmatlar/cleaner.html', {'xizmatlar': xizmatlar,})
+
+def qassoblar(request):
+    xizmatlar = Xizmat.objects.filter(kategoriya='Қассоб')
+    return render(request, 'xizmatlar/qassob.html', {'xizmatlar': xizmatlar,})
+
+
+
+def service_by_category(request, kategoriya):
+    services = Xizmat.objects.filter(kategoriya=kategoriya)
+    context = {
+        'services': services,
+        'kategoriya': kategoriya,
+    }
+    return render(request, 'services/services_by_category.html', context)
+
+
+
+
+
+
+def add_santexnik_service(request):
+    if request.method == 'POST':
+        # Foydalanuvchi kiritgan ma'lumotlarni olish
+        nomi = request.POST.get('nomi')
+        tavsif = request.POST.get('tavsif')
+        narx = request.POST.get('narx')
+        joylashuv = request.POST.get('joylashuv')
+        telefon = request.POST.get('telefon')
+        kategoriya = 'Сантехник'
+        rasm = request.FILES.get('rasm')
+
+        # Yangi xizmatni saqlash
+        Xizmat.objects.create(
+            nomi=nomi,
+            tavsif=tavsif,
+            narx=narx,
+            joylashuv=joylashuv,
+            telefon=telefon,
+            kategoriya=kategoriya,
+            rasm=rasm
+        )
+        # Xizmat qo'shilib bo'lgach, 'santexniklar' sahifasiga yo'naltirish
+        return redirect('santexniklar')  # Bu yerda 'santexniklar' URL nomini ishlatish kerak
+
+    return render(request, 'xizmatlar/add_santexnik_service.html')
+
+
+
+
+
+
+
+
+
 def chat_room(request, room_name):
     return render(request, 'xizmatlar/chat_room.html', {
         'room_name': room_name,
@@ -90,10 +205,23 @@ def signup_view(request):
 
 
 
-def delete_service(request, pk):
+def delete_service(request, pk, next_url='xizmatlar_royxati'):
     service = get_object_or_404(Xizmat, pk=pk)
+    if service.user != request.user:
+        return HttpResponseForbidden("Siz bu xizmatni o‘chira olmaysiz!")
     service.delete()
-    return redirect('xizmatlar_royxati')  
+    return redirect(next_url)
+  
+
+def delete_santexnik_service(request, pk):
+    service = get_object_or_404(Xizmat, pk=pk)
+    
+    # Tekshiruv: faqat xizmatni yaratgan foydalanuvchi o‘chirishi mumkin
+    if service.user != request.user:
+        return HttpResponseForbidden("Siz bu xizmatni o‘chira olmaysiz!")
+    
+    service.delete()
+    return redirect('santexniklar')
 
 def xizmat_ochirish(request, xizmat_id):
     xizmat = get_object_or_404(Xizmat, id=xizmat_id)
@@ -114,7 +242,10 @@ def xizmatlar_royxati(request):
         xizmatlar = xizmatlar.filter(nomi__icontains=qidiruv)
 
     if kategoriya:
-        xizmatlar = xizmatlar.filter(kategoriya=kategoriya)
+        xizmatlar = xizmatlar.filter(kategoriya__icontains=kategoriya)
+
+
+
 
     paginator = Paginator(xizmatlar, 5)
     page_number = request.GET.get('page')
@@ -126,6 +257,7 @@ def xizmatlar_royxati(request):
         'kategoriya': kategoriya,
     })
 
+@login_required
 def add_service(request):
     if request.method == 'POST':
         nomi = request.POST.get('nomi')
@@ -153,6 +285,7 @@ def add_service(request):
 
 
 
+@login_required
 def service_detail(request, pk):
     xizmat = get_object_or_404(Xizmat, pk=pk)
     sharhlar = xizmat.sharhlar.all()
