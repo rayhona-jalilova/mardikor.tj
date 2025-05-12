@@ -395,33 +395,46 @@ header .nav-links {
 }
 
 /* ===== MODAL ===== */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    animation: fadeIn 0.4s ease-in-out;
+/* Modalni markazlashtirish */
+
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.modal-content {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 2rem;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(15px);
-    color: #fff;
-    font-family: 'Roboto', sans-serif;
-    position: relative;
-    animation: scaleUp 0.3s ease-out;
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
 }
+
+.skidka-img-style {
+    width: 80px;
+    height: auto;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    cursor: pointer;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .skidka-img-style:hover {
+    transform: scale(1.1);
+  }
+  
+
 
 .modal-content input,
 .modal-content textarea {
@@ -456,19 +469,46 @@ header .nav-links {
     background: linear-gradient(135deg, #38b45f, #1c65d5);
 }
 
-.close-btn {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 26px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.3s ease;
+/* Modalni yashirish */
+.modal {
+    display: none;  /* Modalni yashirish */
+    position: fixed;
+    z-index: 1; /* Modalni yuqoriga joylash*/
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); /* Yengil qoraytirilgan fon */
+    overflow: auto;
+    display: none;
 }
 
-.close-btn:hover {
-    color: #fff;
+/* Modal ichidagi kontent */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
+
+/* Modal yopish tugmasi */
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -495,3 +535,14 @@ header .nav-links {
     background-color: #009edb;
 }
 
+
+.btn{
+    background-color: #00c8ff;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

@@ -60,15 +60,29 @@
                         <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" style="max-width: 200px;">
                     {% endif %}
     
-                    <a href="{% url 'service_detail' xizmat.id %}" class="btn">Тавсифлаш</a>
+                    <a href="{% url 'service_detail' xizmat.id %}" class="btn">Тавсиф додан</a>
     
                     <button id="contact-btn-{{ xizmat.id }}" class="contact-button">Фармоиш додан/ Тамос</button>
+
+                    <div id="contact-modal-{{ xizmat.id }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn" data-modal-id="{{ xizmat.id }}">&times;</span>
+                            <h2> Тамос шудан</h2>
+                            <form method="post" action="{% url 'send_message' %}">
+                                {% csrf_token %}
+                                <input type="text" name="name" placeholder="Ismingiz" required>
+                                <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
+                                <textarea name="message" placeholder="Xabarni kiriting..." required></textarea>
+                                <button type="submit">Фиристодан</button>
+                            </form>
+                        </div>
+                    </div>
     
                     <!-- O‘chirish tugmasi, faqat foydalanuvchi xizmatni yaratgan bo‘lsa ko‘rsatiladi -->
                     {% if user == xizmat.user %}
                         <form method="post" action="{% url 'delete_santexnik_service' xizmat.id %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Ўчириш</button>
+                            <button type="submit" class="btn btn-danger">Тоза кардан</button>
                         </form>
                     {% endif %}
                 </li>

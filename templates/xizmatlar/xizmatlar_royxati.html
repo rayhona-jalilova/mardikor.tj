@@ -59,9 +59,9 @@
             <a href="{% url 'santexniklar'%}"><img src="{% static 'xizmatlar/images/OIP.jpg' %}" class="category-type-img"></a>
             <a href="{% url 'xasharchi'%}"><img src="{% static 'xizmatlar/images/10720359.png' %}" class="category-type-img"></a>
             <a href="{% url 'barqchi'%}"><img src="{% static 'xizmatlar/images/электр.jpg' %}" class="category-type-img"></a>
-            <a href="{% url 'cleaner'%}"><img src="{% static 'xizmatlar/images/cleaner.png' %}" class="category-type-img"></a>
-            <a href="{% url 'qassob'%}"><img src="{% static 'xizmatlar/images/қассоб.png' %}" class="category-type-img"></a>
-            <a href="{% url 'skidka'%}"><img src="{% static 'xizmatlar/images/skidka.jpg'%}" ></a>
+            <a href="{% url 'cleaner'%}"><img src="{% static 'xizmatlar/images/uborchik.webp' %}" class="category-type-img"></a>
+            <a href="{% url 'qassob'%}"><img src="{% static 'xizmatlar/images/qассоб.png' %}" class="category-type-img"></a>
+            <a href="{% url 'skidka'%}"><img src="{% static 'xizmatlar/images/10_skidka.png'%}" class="skidka-img-style"></a>
         </div>
         {% if page_obj %}
         <ul class="service-list">
@@ -106,13 +106,14 @@
                         
 
                     <!-- Modal tugma (hamma foydalanuvchilar uchun chiqadi) -->
-                        <button id="contact-btn-{{ xizmat.id }}" class="contact-button"> Фармоиш додан/ Тамос</button>
+                   <!-- Kontakt tugmasi -->
+                        <button id="contact-btn-{{ xizmat.id }}" class="contact-button">Фармоиш додан/Тамос</button>
 
-                    <!-- Modal oynasi -->
+                        <!-- Modal (Kontakt formasi) -->
                         <div id="contact-modal-{{ xizmat.id }}" class="modal">
                             <div class="modal-content">
                                 <span class="close-btn" data-modal-id="{{ xizmat.id }}">&times;</span>
-                                <h2> Тамос шудан</h2>
+                                <h2>Тамос шудан</h2>
                                 <form method="post" action="{% url 'send_message' %}">
                                     {% csrf_token %}
                                     <input type="text" name="name" placeholder="Ismingiz" required>
@@ -122,6 +123,9 @@
                                 </form>
                             </div>
                         </div>
+
+
+                    
                         
                     
                 </li>
@@ -138,51 +142,58 @@
         <a href="{% url 'add_service' %}" class="add-button">➕ Хизмат дохил кардан</a>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const modeToggleButton = document.getElementById('mode-toggle');
-            const body = document.body;
-    
-            // Initial icon state
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dark/Light mode toggle
+        const modeToggleButton = document.getElementById('mode-toggle');
+        const body = document.body;
+        
+        modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        
+        modeToggleButton.addEventListener('click', function () {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
             modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    
-            // Toggle mode
-            modeToggleButton.addEventListener('click', function () {
-                if (body.classList.contains('dark-mode')) {
-                    body.classList.remove('dark-mode');
-                    body.classList.add('light-mode');
-                    modeToggleButton.innerText = '🌙';
-                } else {
-                    body.classList.remove('light-mode');
-                    body.classList.add('dark-mode');
-                    modeToggleButton.innerText = '☀️';
-                }
-            });
-    
-            // Modal logic — qolgani to‘g‘ri
-            document.querySelectorAll('[id^="contact-btn-"]').forEach(function (btn) {
-                const id = btn.id.split('-')[2];
-                const modal = document.getElementById(`contact-modal-${id}`);
-                const closeBtn = modal.querySelector('.close-btn');
-    
-                btn.addEventListener('click', function () {
-                    modal.style.display = 'flex';
-                });
-    
-                closeBtn.addEventListener('click', function () {
-                    modal.style.display = 'none';
-                });
-    
-                window.addEventListener('click', function (event) {
-                    if (event.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
+        });
+        
+        // Kontakt tugmasi va modalni boshqarish
+        const contactButtons = document.querySelectorAll('.contact-button');
+        const closeButtons = document.querySelectorAll('.close-btn');
+        
+        contactButtons.forEach(function(button) {
+            const id = button.id.split('-')[2]; // contact-btn-{{ id }}
+            const modal = document.getElementById(`contact-modal-${id}`);
+        
+            button.addEventListener('click', function () {
+                modal.style.display = 'flex';  // Modalni ochish
             });
         });
-    </script>
+        
+        closeButtons.forEach(function(btn) {
+            const id = btn.getAttribute('data-modal-id');
+            const modal = document.getElementById(`contact-modal-${id}`);
+        
+            btn.addEventListener('click', function () {
+                modal.style.display = 'none';  // Modalni yopish
+            });
+        });
     
-
+        // Modal tashqarisiga bosilsa yopiladi
+        window.addEventListener('click', function (event) {
+            contactButtons.forEach(function(button) {
+                const id = button.id.split('-')[2]; // contact-btn-{{ id }}
+                const modal = document.getElementById(`contact-modal-${id}`);
+                if (event.target === modal) {
+                    modal.style.display = 'none';  // Modalni yopish
+                }
+            });
+        });
+    });
     
+</script>
+    
+    
+        
 </body>
 </html>

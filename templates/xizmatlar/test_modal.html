@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Modal Test</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .contact-button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form input, form textarea {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Trigger button -->
+<button id="contact-btn-1" class="contact-button">Фармоиш додан</button>
+
+<!-- Modal -->
+<div id="contact-modal-1" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" data-modal-id="1">&times;</span>
+        <h3>Тамос</h3>
+        <form>
+            <input type="text" placeholder="Ismingiz">
+            <input type="tel" placeholder="Telefon raqam">
+            <textarea placeholder="Xabaringiz..."></textarea>
+            <button type="submit">Yuborish</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ochish
+        document.getElementById('contact-btn-1').addEventListener('click', function () {
+            document.getElementById('contact-modal-1').style.display = 'flex';
+        });
+
+        // Yopish tugmasi
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            document.getElementById('contact-modal-1').style.display = 'none';
+        });
+
+        // Modal tashqarisiga bosilganda yopish
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('contact-modal-1');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
