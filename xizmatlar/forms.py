@@ -12,7 +12,7 @@ class MessageForm(forms.ModelForm):
 class XizmatForm(forms.ModelForm):
     class Meta:
         model = Xizmat
-        fields = ['nomi', 'tavsif', 'narx', 'joylashuv', 'telefon', 'rasm', 'kategoriya', 'skidka']
+        fields = ['nomi', 'tavsif', 'narx', 'nohiya', 'telefon', 'rasm', 'kategoriya', 'skidka']
         widgets = {
             'nomi': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -27,10 +27,7 @@ class XizmatForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Масалан: 150000'
             }),
-            'joylashuv': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Шаҳр ё маҳалла'
-            }),
+            
             'telefon': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '+992 90 123 4567'

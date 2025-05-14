@@ -1,21 +1,16 @@
-/* Global Styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+/* Umumiy */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f7f6;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
     color: #333;
-    line-height: 1.6;
 }
 
+/* Header */
 header {
-    background-color: #1e2a47;
+    background-color: #004080;
     color: white;
-    padding: 20px;
+    padding: 20px 0;
     text-align: center;
 }
 
@@ -23,208 +18,208 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 0 20px;
+    flex-wrap: wrap;
 }
 
-header .logo {
-    font-size: 1.5rem;
+.logo {
+    font-size: 1.4rem;
     font-weight: bold;
-    text-decoration: none;
-    color: white;
-}
-
-header nav a {
-    margin-left: 20px;
     color: white;
     text-decoration: none;
-    font-size: 1.1rem;
 }
 
-header nav a:hover {
-    color: #1f85e2;
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 1rem;
+}
+
+.add-discount-btn {
+    background-color: #00b300;
+    padding: 8px 14px;
+    border-radius: 5px;
+    color: white;
 }
 
 .page-title {
-    margin-top: 15px;
-    font-size: 1.6rem;
-    font-weight: 600;
+    margin-top: 10px;
+    font-size: 1.5rem;
 }
 
+/* Main qism */
 main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
+    padding: 30px 20px;
 }
 
-h1.section-title {
+.section-title {
     text-align: center;
-    font-size: 2rem;
     margin-bottom: 30px;
+    font-size: 1.8rem;
 }
 
+/* Xizmat kartalari */
 .service-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
+    justify-content: center;
 }
 
 .service-card {
-    width: 300px;
-    margin: 15px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     overflow: hidden;
-    transition: transform 0.3s ease-in-out;
+    width: 300px;
+    position: relative;
+    transition: transform 0.3s;
 }
 
 .service-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
 }
 
 .xizmat-image {
     width: 100%;
-    height: 200px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 12px 12px 0 0;
 }
 
 .service-info {
-    padding: 20px;
+    padding: 15px;
 }
 
 .service-title {
-    font-size: 1.3rem;
-    color: #1e2a47;
-    font-weight: bold;
+    font-size: 1.2rem;
     margin-bottom: 10px;
 }
 
 .service-description {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #555;
-    margin-bottom: 15px;
-    line-height: 1.4;
+    margin-bottom: 10px;
 }
 
 .price {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .old-price {
     text-decoration: line-through;
     color: #999;
+    font-size: 1rem;
 }
 
 .new-price {
-    font-size: 1.3rem;
-    color: #e63946;
+    color: #e60000;
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.service-actions {
-    display: flex;
-    justify-content: space-between;
-}
-
-.details-btn, .contact-btn {
-    padding: 10px 15px;
-    background-color: #1e2a47;
+/* Kontakt tugmasi */
+.contact-button {
+    margin: 10px auto 30px auto;
+    display: block;
+    background-color: #007bff;
     color: white;
-    text-decoration: none;
+    padding: 10px 18px;
+    border: none;
     border-radius: 6px;
-    font-weight: 600;
-    transition: background-color 0.3s;
+    font-size: 1rem;
     cursor: pointer;
-}
-
-.details-btn:hover, .contact-btn:hover {
-    background-color: #1f85e2;
-}
-
-.add-discount-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
     transition: background-color 0.3s;
 }
 
-.add-discount-btn:hover {
-    background-color: #45a049;
+.contact-button:hover {
+    background-color: #0056b3;
 }
 
-/* Modal Styles */
+/* Modal oynasi */
 .modal {
     display: none;
     position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.modal.show {
-    display: flex;
-    opacity: 1;
 }
 
 .modal-content {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 500px;
-}
-
-.modal-content h3 {
-    font-size: 1.4rem;
-    margin-bottom: 20px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .close-btn {
-    font-size: 24px;
-    color: #333;
-    cursor: pointer;
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 15px;
+    font-size: 26px;
+    cursor: pointer;
+    color: #333;
 }
 
-input, textarea {
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    color: #004080;
+}
+
+.modal-content input,
+.modal-content textarea {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 6px;
-    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
-input:focus, textarea:focus {
-    border-color: #1e2a47;
-    outline: none;
-}
-
-.send-btn {
-    background-color: #1e2a47;
+.modal-content button[type="submit"] {
+    background-color: #28a745;
     color: white;
-    padding: 12px 20px;
-    border-radius: 6px;
+    padding: 10px 18px;
     border: none;
-    width: 100%;
+    border-radius: 6px;
+    font-size: 1rem;
     cursor: pointer;
 }
 
-.send-btn:hover {
-    background-color: #1f85e2;
+.modal-content button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Responsiv dizayn */
+@media (max-width: 600px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 5px 0;
+    }
+
+    .service-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .service-card {
+        width: 100%;
+        max-width: 360px;
+    }
 }

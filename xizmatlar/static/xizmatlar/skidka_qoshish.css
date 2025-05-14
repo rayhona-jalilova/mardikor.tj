@@ -26,3 +26,17 @@ body {
     font-style: italic;
     color: #aaa;
 }
+
+
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

@@ -14,7 +14,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Message, User, Availability
 from .forms import MessageForm
-
+from django.contrib import messages
+from django.db.models import Q
 
 
 
@@ -235,11 +236,21 @@ def xizmat_ochirish(request, xizmat_id):
 def xizmatlar_royxati(request):
     qidiruv = request.GET.get('qidiruv', '')
     kategoriya = request.GET.get('kategoriya', '')  
+    nohiya_qidiruv = request.GET.get('nohiya')
+
 
     xizmatlar = Xizmat.objects.all().order_by('-sana')
 
     if qidiruv:
-        xizmatlar = xizmatlar.filter(nomi__icontains=qidiruv)
+        xizmatlar = xizmatlar.filter(
+            Q(nomi__icontains=qidiruv) |
+            Q(tavsif__icontains=qidiruv) 
+          
+        )
+    if nohiya_qidiruv:
+        xizmatlar = xizmatlar.filter(
+            Q(nohiya__icontains=nohiya_qidiruv)
+        )
 
     if kategoriya:
         xizmatlar = xizmatlar.filter(kategoriya__icontains=kategoriya)
@@ -256,32 +267,41 @@ def xizmatlar_royxati(request):
         'qidiruv': qidiruv,
         'kategoriya': kategoriya,
     })
-
 @login_required
 def add_service(request):
     if request.method == 'POST':
+        # Foydalanuvchidan ma'lumotlarni olish
         nomi = request.POST.get('nomi')
         tavsif = request.POST.get('tavsif')
         narx = request.POST.get('narx')
-        joylashuv = request.POST.get('joylashuv')
+        nohiya = request.POST.get('nohiya')
         telefon = request.POST.get('telefon')
         rasm = request.FILES.get('rasm')
-        kategoriya = request.POST.get('kategoriya')  
-
+        kategoriya = request.POST.get('kategoriya')
+        
         if nomi and tavsif:
-            Xizmat.objects.create(
+            # Xizmat ob'ektini yaratish
+            xizmat = Xizmat.objects.create(
                 nomi=nomi,
                 tavsif=tavsif,
                 narx=narx if narx else 0,
-                joylashuv=joylashuv,
+                nohiya=nohiya,
                 telefon=telefon,
                 rasm=rasm,
                 user=request.user,
                 kategoriya=kategoriya  
             )
-            return redirect('xizmatlar_royxati')
+            return redirect('xizmatlar_royxati')  # Xizmatlar ro'yxatiga yo'naltirish
+        else:
+            # Bu yerda form obyektini yaratmasangiz ham bo'ladi,
+            # lekin xatolikni xabarda ko‘rsatish mumkin
+            messages.error(request, "Iltimos, barcha majburiy maydonlarni to‘ldiring.")
+            return render(request, 'xizmatlar/add_service.html', {'form': XizmatForm()})
 
-    return render(request, 'xizmatlar/add_service.html')
+    else:
+        form = XizmatForm()
+
+    return render(request, 'xizmatlar/add_service.html', {'form': form})
 
 
 

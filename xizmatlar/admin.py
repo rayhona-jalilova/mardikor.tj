@@ -12,8 +12,8 @@ admin.site.register(Sharh)
 
 
 class XizmatAdmin(admin.ModelAdmin):
-    list_display = ('nomi', 'kategoriya', 'narx', 'joylashuv', 'telefon', 'sana', 'skidka')
+    list_display = ('nomi', 'kategoriya', 'narx', 'nohiya', 'telefon', 'sana', 'skidka')
     list_filter = ('kategoriya', 'sana')
-    search_fields = ('nomi', 'tavsif', 'joylashuv')
+    search_fields = ('nomi', 'tavsif', 'nohiya')
 
 admin.site.register(Xizmat, XizmatAdmin)

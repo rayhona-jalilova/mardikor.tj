@@ -28,42 +28,79 @@
             {% for xizmat in xizmatlar %}
                 <div class="service-card">
                     {% if xizmat.rasm %}
-                        <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" class="xizmat-image">
+                        <a href="{% url 'service_detail' xizmat.pk %}">
+                            <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" class="xizmat-image">
+                        </a>
                     {% endif %}
                     <div class="service-info">
                         <h3 class="service-title">{{ xizmat.nomi }}</h3>
                         <p class="service-description">{{ xizmat.tavsif|truncatechars:100 }}</p>
                         <div class="price">
                             <span class="old-price">{{ xizmat.narx }} сомонӣ</span>
-                            <!-- Server tomonidan hisoblangan chegirmali narx -->
                             <span class="new-price">{{ xizmat.narx|multiply:0.9|floatformat:0 }} сомонӣ</span>
                         </div>
-                        <div class="service-actions">
-                            <a href="{% url 'service_detail' xizmat.id %}" class="details-btn">Тавсиф</a>
-                            <button class="contact-btn" data-id="{{ xizmat.id }}">Фармоиш додан / Тамос</button>
+                        <button id="contact-btn-{{ xizmat.id }}" class="contact-button" data-modal="contact-modal-{{ xizmat.id }}">
+                            Фармоиш додан/Тамос
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div id="contact-modal-{{ xizmat.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close-btn" data-close="contact-modal-{{ xizmat.id }}">&times;</span>
+                                <h2>Тамос шудан</h2>
+                                <form method="post" action="{% url 'send_message' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name="name" placeholder="Ismingiz" required>
+                                    <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
+                                    <textarea name="message" class="contact-message" placeholder="Xabarni kiriting..." required></textarea>
+                                    <input type="hidden" name="xizmat_id" value="{{ xizmat.id }}">
+                                    <button type="submit">Фиристодан</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Modal -->
-                <div class="modal" id="modal-{{ xizmat.id }}">
-                    <div class="modal-content">
-                        <span class="close-btn" data-id="{{ xizmat.id }}">&times;</span>
-                        <h3>Bron qilish uchun aloqa</h3>
-                        <form method="post" action="{% url 'book_service' xizmat.id %}">
-                            {% csrf_token %}
-                            <input type="text" name="ism" placeholder="Ismingiz" required>
-                            <input type="tel" name="telefon" placeholder="Telefon raqamingiz" required>
-                            <textarea name="xabar" placeholder="Xabar..." rows="4"></textarea>
-                            <button type="submit" class="send-btn">Фиристодан</button>
-                        </form>
-                    </div>
-                </div>
+                
             {% empty %}
                 <p style="text-align:center; font-size: 1.2rem;">Ҳоло хизматҳои тахфиф  мавҷуд нест.</p>
             {% endfor %}
         </div>
     </main>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kontakt tugmasini bosganda modalni ochish
+            document.querySelectorAll('.contact-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const modalId = btn.getAttribute('data-modal');
+                    const modal = document.getElementById(modalId);
+                    if (modal) modal.style.display = 'flex';
+                });
+            });
+    
+            // Yopish tugmasi
+            document.querySelectorAll('.close-btn').forEach(function (closeBtn) {
+                closeBtn.addEventListener('click', function () {
+                    const modalId = closeBtn.getAttribute('data-close');
+                    const modal = document.getElementById(modalId);
+                    if (modal) modal.style.display = 'none';
+                });
+            });
+    
+            // Modal tashqarisiga bosilsa yopiladi
+            window.addEventListener('click', function (event) {
+                document.querySelectorAll('.modal').forEach(function (modal) {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    
+
 
 </body>
 </html>
