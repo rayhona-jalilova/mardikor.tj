@@ -46,7 +46,11 @@
         <!-- Contact Button -->
         
         
-        <form method="get" action="" class="search-form">
+        
+        <button id="mode-toggle">🌙/☀️</button> <!-- id qo‘shildi -->
+    </header>
+    
+    <form method="get" action="" class="search-form">
             <select name="nohiya" class="xizmat-nohiya" required >
                 <option value="">Ноҳияро интихоб кунед</option>
         
@@ -122,9 +126,8 @@
             <input type="text" name="qidiruv" placeholder="Хизматро ҷустуҷӯ кун..." value="{{ qidiruv }}">
             <button type="submit">🔍</button>
         </form>
-        <button id="mode-toggle">🌙/☀️</button> <!-- id qo‘shildi -->
-    </header>
-    
+
+
     <main>
         <div class="category-type">
             <h2>Категория:</h2>
@@ -215,59 +218,53 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Dark/Light mode toggle
-        const modeToggleButton = document.getElementById('mode-toggle');
-        const body = document.body;
-        
+    // Dark/Light mode toggle
+    const modeToggleButton = document.getElementById('mode-toggle');
+    const body = document.body;
+
+    modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+
+    modeToggleButton.addEventListener('click', function () {
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
         modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        
-        modeToggleButton.addEventListener('click', function () {
-            body.classList.toggle('dark-mode');
-            body.classList.toggle('light-mode');
-            modeToggleButton.innerText = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        });
-        
-        // Kontakt tugmasi va modalni boshqarish
-        const contactButtons = document.querySelectorAll('.contact-button');
-        const closeButtons = document.querySelectorAll('.close-btn');
-        
-        contactButtons.forEach(function(button) {
-            const id = button.id.split('-')[2]; // contact-btn-{{ id }}
-            const modal = document.getElementById(`contact-modal-${id}`);
-        
-            button.addEventListener('click', function () {
-                modal.style.display = 'flex';  // Modalni ochish
-            });
-        });
-        
-        closeButtons.forEach(function(btn) {
-            const id = btn.getAttribute('data-modal-id');
-            const modal = document.getElementById(`contact-modal-${id}`);
-        
-            btn.addEventListener('click', function () {
-                modal.style.display = 'none';  // Modalni yopish
-            });
-        });
-    
-        // Modal tashqarisiga bosilsa yopiladi
-        window.addEventListener('click', function (event) {
-            contactButtons.forEach(function(button) {
-                const id = button.id.split('-')[2]; // contact-btn-{{ id }}
-                const modal = document.getElementById(`contact-modal-${id}`);
-                if (event.target === modal) {
-                    modal.style.display = 'none';  // Modalni yopish
-                }
-            });
-        });
     });
-    
-    document.querySelector(".search-form").addEventListener("submit", function(e) {
-        var district = document.querySelector('select[name="nohiya"]').value;
-        if (!district) {
-            alert("Илтимос, аввал ноҳияро интихоб намоед.");
-            e.preventDefault();
+
+    // Modal logic using event delegation
+    document.body.addEventListener('click', function (event) {
+        const target = event.target;
+
+        // Open modal
+        if (target.classList.contains('contact-button')) {
+            const id = target.id.split('-')[2];
+            const modal = document.getElementById(`contact-modal-${id}`);
+            modal.style.display = 'flex';
+        }
+
+        // Close modal
+        if (target.classList.contains('close-btn')) {
+            const id = target.getAttribute('data-modal-id');
+            const modal = document.getElementById(`contact-modal-${id}`);
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        if (target.classList.contains('modal')) {
+            target.style.display = 'none';
         }
     });
+
+    document.querySelector(".search-form").addEventListener("submit", function (e) {
+    const district = document.querySelector('select[name="nohiya"]').value;
+    if (!district) {
+        alert("Илтимос, ноҳияро интихоб кунед."); // Improved message
+        e.preventDefault();
+    }
+    });
+    function confirmDelete() {
+    return confirm("Шумо боварӣ доред, ки ин хизматро тоза кардан мехоҳед?");
+}
+});
 </script>
     
     
