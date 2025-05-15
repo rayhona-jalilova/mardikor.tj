@@ -13,9 +13,24 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+import os
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+# Statik fayllar URL manzili
+STATIC_URL = '/static/'
+
+# Statik fayllar qayerda joylashganini ko‘rsatadi (ishlab chiqish vaqtida)
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Statik fayllarni yig‘ib qo‘yish uchun papka (production uchun kerak)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production

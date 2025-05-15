@@ -1,0 +1,42 @@
+body {
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    font-family: 'Segoe UI', sans-serif;
+}
+.skidka-form-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 600px;
+    margin: 60px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+.skidka-form-wrapper h2 {
+    font-weight: bold;
+    color: #00796b;
+}
+.btn-skidka {
+    background-color: #00796b;
+    color: white;
+    font-weight: 500;
+}
+.btn-skidka:hover {
+    background-color: #004d40;
+}
+.form-control::placeholder {
+    font-style: italic;
+    color: #aaa;
+}
+
+
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,89 @@
+/* General Reset */
+body, h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.about-body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f7fa;
+    color: #222;
+    padding: 20px;
+}
+
+/* Header */
+.about-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+}
+
+.brand {
+    color: #007bff;
+}
+
+.back-button {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.back-button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Main Content */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-section {
+    margin-bottom: 30px;
+}
+
+.about-section h2 {
+    font-size: 1.5rem;
+    color: #34495e;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.about-section p, .about-section ul {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.about-section ul {
+    list-style: disc inside;
+    margin-top: 10px;
+}
+
+/* Footer */
+.about-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #888;
+}

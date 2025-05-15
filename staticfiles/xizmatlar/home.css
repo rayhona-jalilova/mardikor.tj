@@ -1,0 +1,190 @@
+/* Умумӣ */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f7fc;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #181818;
+    color: #fff;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Сексияи сар */
+header {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px 0;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo a {
+    font-size: 1.6rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+nav a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #ffcc00;
+}
+
+.user-auth {
+    display: flex;
+    align-items: center;
+}
+
+.auth-links a {
+    color: #fff;
+    margin-left: 10px;
+}
+
+.auth-links a:hover {
+    color: #ffcc00;
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Сексияи асосӣ */
+.hero {
+    background-color: #0055a4;
+    color: #fff;
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.hero-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    object-fit: cover;
+    opacity: 0.3;
+}
+
+.btn-primary {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #e6b800;
+}
+
+/* Сексияи дар бораи */
+.about-section, .contact {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+}
+
+.contact a {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.contact a:hover {
+    background-color: #218838;
+}
+
+/* Сексияи поён */
+footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer p {
+    font-size: 0.9rem;
+}
+
+/* Танзимоти мобилӣ */
+@media (max-width: 768px) {
+    .nav-links a {
+        font-size: 1rem;
+        margin-left: 15px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero-image {
+        opacity: 0.5;
+    }
+}
