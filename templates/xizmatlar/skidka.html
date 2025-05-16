@@ -70,26 +70,30 @@
 
     <!-- JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Kontakt tugmasini bosganda modalni ochish
-            document.querySelectorAll('.contact-btn').forEach(function (btn) {
+            document.addEventListener('DOMContentLoaded', function () {
+            // Open modal
+            document.querySelectorAll('.contact-button').forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     const modalId = btn.getAttribute('data-modal');
                     const modal = document.getElementById(modalId);
-                    if (modal) modal.style.display = 'flex';
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    }
                 });
             });
-    
-            // Yopish tugmasi
+
+            // Close modal
             document.querySelectorAll('.close-btn').forEach(function (closeBtn) {
                 closeBtn.addEventListener('click', function () {
                     const modalId = closeBtn.getAttribute('data-close');
                     const modal = document.getElementById(modalId);
-                    if (modal) modal.style.display = 'none';
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
                 });
             });
-    
-            // Modal tashqarisiga bosilsa yopiladi
+
+            // Close modal when clicking outside
             window.addEventListener('click', function (event) {
                 document.querySelectorAll('.modal').forEach(function (modal) {
                     if (event.target === modal) {

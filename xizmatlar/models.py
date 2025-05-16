@@ -37,16 +37,16 @@ class Xizmat(models.Model):
 ]
     
     NOHIYA_TANLOVI = [
-    ('Dushanbe', 'Душанбе'),
-    ('Khujand', 'Хуҷанд'),
-    ('Kulob', 'Кӯлоб'),
-    ('Bokhtar', 'Бохтар'),
-    ('Hisor', 'Ҳисор'),
-    ('Istaravshan', 'Истаравшан'),
-    ('Panjakent', 'Панҷакент'),
-    ('Tursunzoda', 'Турсунзода'),
-    ('Khorugh', 'Хоруғ'),
-    ('Other', 'Дигар'),
+    ('Душанбе', 'Душанбе'),
+    ('Хуҷанд', 'Хуҷанд'),
+    ('Кӯлоб', 'Кӯлоб'),
+    ('Бохтар', 'Бохтар'),
+    ('Ҳисор', 'Ҳисор'),
+    ('Истаравшан', 'Истаравшан'),
+    ('Панҷакент', 'Панҷакент'),
+    ('Турсунзода', 'Турсунзода'),
+    ('Хоруғ', 'Хоруғ'),
+    ('Дигар', 'Дигар'),
 ]
 
     nomi = models.CharField(max_length=200)
@@ -54,7 +54,7 @@ class Xizmat(models.Model):
     narx = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
     telefon = models.CharField(max_length=50, blank=True, null=True)
-    nohiya = models.CharField(max_length=50, choices=NOHIYA_TANLOVI, default='Other')
+    nohiya = models.CharField(max_length=50, choices=NOHIYA_TANLOVI, default='Дигар')
     rasm = models.ImageField(upload_to='xizmatlar_rasmlar/', blank=True, null=True)
     sana = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
