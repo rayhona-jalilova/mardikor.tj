@@ -173,25 +173,18 @@
                         </form>
                         {% endif %}
                     
-                        
-                    
-                    <!-- Agar foydalanuvchi xizmat egasi BO‘LMASA, Chat tugmasi ko‘rsatiladi -->
-                        
-
-                    <!-- Modal tugma (hamma foydalanuvchilar uchun chiqadi) -->
-                   <!-- Kontakt tugmasi -->
                         <button id="contact-btn-{{ xizmat.id }}" class="contact-button">Фармоиш додан/Тамос</button>
 
-                        <!-- Modal (Kontakt formasi) -->
+                        <!-- Modal (Kontakt form) -->
                         <div id="contact-modal-{{ xizmat.id }}" class="modal">
                             <div class="modal-content">
                                 <span class="close-btn" data-modal-id="{{ xizmat.id }}">&times;</span>
                                 <h2>Тамос шудан</h2>
                                 <form method="post" action="{% url 'send_message' %}">
                                     {% csrf_token %}
-                                    <input type="text" name="name" placeholder="Ismingiz" required>
-                                    <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
-                                    <textarea name="message" class="contact-message" placeholder="Xabarni kiriting..." required ></textarea>
+                                    <input type="text" name="name" placeholder="Номи худро нависед..." required>
+                                    <input type="tel" name="phone" placeholder="Рақами телефон" required>
+                                    <textarea name="message" class="contact-message" placeholder="Хабарро дохил кунед..." required ></textarea>
                                     <button type="submit">Фиристодан</button>
                                 </form>
                             </div>
