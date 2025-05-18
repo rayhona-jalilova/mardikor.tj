@@ -276,11 +276,17 @@ header .nav-links {
 
 /* ===== SERVICE LIST ===== */
 .service-list {
+    
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    padding: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    padding: 32px 0;
+    list-style: none;
+    margin: 0 auto;           /* Center the grid */
+    max-width: 1200px;        /* Limit the maximum width */
+    width: 100%;              /* Allow it to shrink on small screens */
 }
+    
 
 .service-card {
     background-color: #ffffff;
