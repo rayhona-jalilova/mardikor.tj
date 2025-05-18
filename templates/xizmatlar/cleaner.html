@@ -44,40 +44,51 @@
         <button id="mode-toggle">🌙/☀️</button>
     </header>
 
-
-
+<main>
     {% if xizmatlar %}
-        <ul>
-            {% for xizmat in xizmatlar %}
-                <li>
-                    <h3>{{ xizmat.nomi }}</h3>
-                    <p>{{ xizmat.tavsif }}</p>
-                    <p>Нарх: {{ xizmat.narx }}</p>
+    <ul class="service-list">
+        {% for xizmat in xizmatlar %}
+        <li class="service-item">
+            {% if xizmat.rasm %}
+            <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" style="max-width: 200px;">
+            {% endif %}
+            <h3>{{ xizmat.nomi }}</h3>
+            
+            <p>{{ xizmat.tavsif }}</p>
+            <p>Нарх: {{ xizmat.narx }} сомонӣ</p>
+            
+            <a href="{% url 'service_detail' xizmat.id %}" class="btn">Тавсиф додан</a>
+            <button id="contact-btn-{{ xizmat.id }}" class="contact-button" data-modal="contact-modal-{{ xizmat.id }}">Фармоиш додан/ Тамос</button>
+            {% if xizmat.user == user %}
+            <form method="post" action="{% url 'delete_service' xizmat.id %}" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Тоза кардан</button>
+            </form>
+            {% endif %}
 
-                    {% if xizmat.rasm %}
-                        <img src="{{ xizmat.rasm.url }}" alt="{{ xizmat.nomi }}" style="max-width: 200px;">
-                    {% endif %}
-
-                    <!-- Tavsiflash tugmasi (Xizmat tafsilotlariga kirish) -->
-                    <a href="{% url 'service_detail' xizmat.id %}" class="btn">Тавсифлаш</a>
-
-                    <!-- Bron qilish tugmasi (Xizmatni bron qilish) -->
-                    <button id="contact-btn-{{ xizmat.id }}" class="contact-button">Фармоиш додан/ Тамос</button>
-
-                    <!-- Uchrish tugmasi (Xizmatni uchirish) -->
-                    {% if xizmat.user == user %}
-                        <form method="post" action="{% url 'delete_service' xizmat.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Ўчириш</button>
-                        </form>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+            <!-- Modal for this service -->
+            <div id="contact-modal-{{ xizmat.id }}" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" aria-label="Close">&times;</span>
+                    <h2>Тамос шудан</h2>
+                    <form method="post" action="{% url 'send_message' %}">
+                        {% csrf_token %}
+                        <input type="text" name="name" placeholder="Номи худро нависед..." required>
+                        <input type="tel" name="phone" placeholder="Рақами телефон" required>
+                        <textarea name="message" class="contact-message" placeholder="Xабари худро дохилкун..." required></textarea>
+                        <input type="hidden" name="xizmat_id" value="{{ xizmat.id }}">
+                        <button type="submit">Фиристодан</button>
+                    </form>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
     {% else %}
-        <p>Ҳоло хизмати тозакунӣ мавҷуд нест.</p>
+    <p>Ҳоло хизмати ҳашарчиён мавҷуд нест.</p>
     {% endif %}
-
+    <a href="{% url 'add_service' %}" class="add-button">➕ Хизмат дохил кардан</a>
+</main>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const modeToggleButton = document.getElementById('mode-toggle');

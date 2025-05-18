@@ -69,9 +69,9 @@
                     <h2>Тамос шудан</h2>
                     <form method="post" action="{% url 'send_message' %}">
                         {% csrf_token %}
-                        <input type="text" name="name" placeholder="Ismingiz" required>
-                        <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
-                        <textarea name="message" class="contact-message" placeholder="Xабарни киритинг..." required></textarea>
+                        <input type="text" name="name" placeholder="Номи худро нависед..." required>
+                        <input type="tel" name="phone" placeholder="Рақами телефон" required>
+                        <textarea name="message" class="contact-message" placeholder="Xабари худро дохилкун..." required></textarea>
                         <input type="hidden" name="xizmat_id" value="{{ xizmat.id }}">
                         <button type="submit">Фиристодан</button>
                     </form>
@@ -130,15 +130,6 @@
                 }
             });
         });
-
-        document.querySelector(".search-form").addEventListener("submit", function (e) {
-            const district = document.querySelector('select[name="nohiya"]').value;
-            if (!district) {
-                alert("Илтимос, ноҳияро интихоб кунед.");
-                e.preventDefault();
-            }
-        });
-    });
 
     function confirmDelete() {
         return confirm("Шумо боварӣ доред, ки ин хизматро тоза кардан мехоҳед?");
