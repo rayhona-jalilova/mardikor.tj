@@ -211,13 +211,14 @@ header h1 {
 /* Service list styles */
 /* Service list container */
 .service-list {
-    display: grid;
+   
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 24px;
     padding: 32px 0;
     list-style: none;
     margin: 0;
     width: 250px;
+    display: flex;
 }
 
 /* Each service item */

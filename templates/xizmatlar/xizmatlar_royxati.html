@@ -139,7 +139,7 @@
             <a href="{% url 'skidka'%}"><img src="{% static 'xizmatlar/images/10_skidka.png'%}" class="skidka-img-style"></a>
         </div>
         {% if page_obj %}
-        <ul class="service-list" style="width:250px; display: flex;">
+        <ul class="service-list" style="width:250px; display: flex; margin-left: -250px;">
             {% for xizmat in page_obj %}
                 <li class="service-card">
                     <a href="{% url 'service_detail' pk=xizmat.pk %}" class="service-link">
